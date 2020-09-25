@@ -1,0 +1,21 @@
+body {
+  background-color: green;
+}
+
+.message {
+  color: white;
+  background-color: black;
+  padding: 5px 15px;
+  border-radius: 3px;
+}
+
+#chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#message-list {
+  width: 50vw;
+  background: gray;
+}
