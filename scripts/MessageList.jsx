@@ -30,7 +30,12 @@ export class MessageList extends React.Component {
     let messageBlocks = [];
 
     messages.forEach(message =>{
-      messageBlocks.push(<Message message={message}/>);
+      messageBlocks.push(
+       <Message 
+          message={message} 
+          key={message}
+        />
+      );
     })
 
     return (
