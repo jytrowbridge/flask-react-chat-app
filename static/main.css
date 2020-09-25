@@ -1,16 +1,25 @@
-body {
-  background-color: green;
-}
-
 .message {
-  color: white;
-  background-color: black;
+  color: black;
+  background-color: white;
   padding: 5px 15px;
-  border-radius: 3px;
+  border-radius: 10px;
+  margin: 15px 0px;
+  display: inline-block;
+  max-width: 300px;
+  word-wrap: break-word;
 }
 
-.otherMsg {
-  background-color: tomato;
+.message-wrapper {
+  display: flex;
+}
+
+.message-wrapper.self-message {
+  justify-content: flex-end;
+}
+
+.message.other-message {
+  background-color: royalblue;
+  color:white;
 }
 
 #chat-wrapper {
@@ -20,6 +29,21 @@ body {
 }
 
 #message-list {
-  width: 50vw;
-  background: gray;
+  width: 40vw;
+  background: lightgray;
+  padding: 15px;
+  border: 2px solid gray;
+  border-radius: 15px;
+}
+
+#input-text {
+  width: 25vw;
+  margin-top: 30px;
+  padding: 15px;
+  text-align: center;
+}
+
+#chat-placeholder {
+  text-align: center;
+  color: #2d2d2d;
 }

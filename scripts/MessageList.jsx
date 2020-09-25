@@ -13,7 +13,6 @@ export class MessageList extends React.Component {
 
   componentDidMount() {
     Socket.on('message received', (data) => {
-      console.log('new message received ' + data);
       let messages = this.state.messages;
       messages.push(data);
       this.setState({
@@ -37,9 +36,13 @@ export class MessageList extends React.Component {
       );
     })
 
+    const placeholder = <div id='chat-placeholder'>No chats yet :( Say something interesting!</div>
+
+    const content = messages.length > 0 ? messageBlocks : placeholder;
+
     return (
       <div id="message-list">
-        {messageBlocks}
+        {content}
       </div>
     );
   }

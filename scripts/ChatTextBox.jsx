@@ -36,6 +36,7 @@ export class ChatTextBox extends React.Component {
         <input type="text" 
           value={this.state.value} 
           onChange={this.handleChange}  
+          id="input-text"
         />
       </form>
     )
