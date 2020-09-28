@@ -13,10 +13,16 @@ def index():
     resp = make_response(render_template('index.html'))
     print(session)
     if not request.cookies.get('user_id'):
+        id = str(os.urandom(10).hex())
         resp.set_cookie(
-            'user_id', 
-            str(os.urandom(10).hex()),
-            samesite='Strict'
+                'user_id',
+                id,
+                samesite='Strict'
+            )
+        resp.set_cookie(
+                'user_name',
+                id,
+                samesite='Strict'
             )
     return resp
 
@@ -36,15 +42,25 @@ def send_message(data):
     print("Got an event for new message with data:", data)
     message = data['message']
     user_id = data['user_id']
+    user_name = data['user_name']
     socketio.emit('message received', {
         'message': message,
-        'user_id' : user_id
+        'user_id' : user_id,
+        'user_name' : user_name
     })
+
+@socketio.on('update_username')
+def change_username(data):
+    print("Got change_username event with data: ", data)
+    user_id = data['user_id']
+    user_name = data['user_name']
+    socketio.emit('change username', data)
+
 
 if __name__ == '__main__': 
     socketio.run(
         app,
         host=os.getenv('IP', '0.0.0.0'),
         port=int(os.getenv('PORT', 80)),
-        debug=False
+        debug=True
     )

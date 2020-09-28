@@ -22,7 +22,8 @@ export class ChatTextBox extends React.Component {
     event.preventDefault();
     Socket.emit('send:message', {
       'message': this.state.value,
-      'user_id': getCookie('user_id')
+      'user_id': getCookie('user_id'),
+      'user_name': getCookie('user_name')
     });
     console.log('sent message ' + this.state.value + ' to server')
     this.setState({

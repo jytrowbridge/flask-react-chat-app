@@ -16,9 +16,30 @@ export class MessageList extends React.Component {
       let messages = this.state.messages;
       messages.push(data);
       this.setState({
-        'message': messages
+        'messages': messages // wait this should be messages?...
       })
-    })
+    });
+
+    Socket.on('change username', (data) => {
+
+      console.log('change username notice received at message list level')
+
+      let user_id = data['user_id'];
+      let user_name = data['user_name'];
+      let messages = this.state.messages;
+      let updated_messages = messages.map(message => {
+        if (message['user_id'] == user_id) {
+          message['user_name'] = user_name;
+        } 
+        return message;
+      });
+
+      console.log(messages);
+
+      this.setState({
+        'messages': updated_messages
+      });
+    });
   }
 
   render() {
@@ -32,6 +53,7 @@ export class MessageList extends React.Component {
           message={message['message']} 
           key={uuidv4()}
           user_id={message['user_id']}
+          user_name={message['user_name']}
         />
       );
     })

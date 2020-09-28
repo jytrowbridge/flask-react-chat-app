@@ -15,7 +15,7 @@ export class Message extends React.Component {
       // <div className="message" data-user-id={this.props.user_id}>
       <div className={msgWrapperClass}>
         <div className={msgClass}>
-          {this.props.message}
+          {this.props.message + this.props.user_name}
         </div>
       </div>
     );
