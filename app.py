@@ -5,6 +5,7 @@ import random
 
 app = Flask(__name__)
 socketio = flask_socketio.SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
 app.secret_key = b'\x0f}\x88\xb3\x16\x0fnfC\x7f\x0c\x1e\xb2OSt\xcem\xa5\x04X\xd8\xba<'
 
 @app.route('/')
