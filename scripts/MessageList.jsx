@@ -14,11 +14,25 @@ export class MessageList extends React.Component {
   componentDidMount() {
     Socket.on('message received', (data) => {
       let messages = this.state.messages;
+
+      const prevMessageInd = messages.length - 1;
       let unixTimestamp = new Date().getTime();
+
+      data['renderName'] = true;
+      data['renderTime'] = true;
+
+      if (prevMessageInd > 0) {
+        if (messages[prevMessageInd]['user_id'] == data['user_id'] 
+           && unixTimeStamp - messages['time'] < 30000) {
+          messages[prevMessageInd]['renderTime'] = false;
+          data['renderName'] = false;
+        }
+      }
+
       data['time'] = unixTimestamp;
       messages.push(data);
       this.setState({
-        'messages': messages // wait this should be messages?...
+        'messages': messages
       })
     });
 
@@ -49,40 +63,27 @@ export class MessageList extends React.Component {
 
     let messageBlocks = [];
 
-    let prevUsername = '';
+    let prevUserID;
     let prevTime = 0;
     messages.forEach((message, index) => {
       
       /*
         when to render time:
-          when the next user is different, or
-          when the previous message was > 30 seconds ago
+          when the next user is different
+          else
+            when the previous message was > 30 seconds ago
+          aka, don't render when:
+            previous user same, and last message < 30 seconds ago
+          
+          when to render name:
+          when the *previous* user is different
+          else
+            when the previous message was > 30 seconds ago
+          aka, don't render when:
+            next user the same, and last message < 30 seconds ago
 
-
+        This should be added to above so it doesn't have to calculate each time
       */
-
-
-      // maybe should stick this in the socket reception
-      let renderName = true;
-      let renderTime = true;
-      if (prevUsername == message['user_name']) { // this should be using id!!
-        if (message['time'] - prevTime < 30000) {
-          // Hide username/time if same user sends multiple messages in a row, and messages were sent within 30 seconds
-          renderName = false;
-        } else {
-          renderTime = true;
-        }
-
-        if (messages.length > index + 1) {
-          if (messages[index + 1]['user_name'] != message['user_name']) {
-            renderTime = true;
-          }
-        }
-
-      }
-
-      prevUsername = message['user_name'];
-      prevTime = message['time'];
 
       messageBlocks.push(
        <Message 
@@ -91,7 +92,8 @@ export class MessageList extends React.Component {
           user_id={message['user_id']}
           user_name={message['user_name']}
           time={message['time']}
-          renderNameAndTime={renderNameAndTime}
+          renderName={message['renderName']}
+          renderTime={message['renderTime']}
         />
       );
     })
