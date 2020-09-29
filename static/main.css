@@ -83,3 +83,10 @@
 .delay-show {
   visibility: hidden;
 }
+
+.timestamp {
+  font-size: smaller;
+  font-style: italic;
+  color: #1e1e1e;
+  margin-right: 5px;
+}

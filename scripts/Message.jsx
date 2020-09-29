@@ -12,6 +12,20 @@ export class Message extends React.Component {
     const msgWrapperOuterClass = 'message-wrapper__outer ' + msgSenderClass;
     const msgWrapperInnerClass = 'message-wrapper__inner ' + msgSenderClass;
     const timestampClass = this.props.delayShow ? 'timestamp delay-show' : 'timestamp' 
+    
+    const timestamp = new Date(this.props.time);
+    const today = new Date();
+    const timeOptions = {month: 'long', day: 'numeric' , hour: '2-digit', minute: '2-digit'};
+    let formattedTime;
+    if (timestamp.getFullYear() == today.getFullYear()
+    && timestamp.getMonth() == today.getMonth()
+    && timestamp.getDate() == today.getDate()) {
+      const timeOptions = {hour: '2-digit', minute: '2-digit'};
+      formattedTime = timestamp.toLocaleTimeString('en-us', timeOptions)
+    } else {
+      const timeOptions = {month: 'long', day: 'numeric' , hour: '2-digit', minute: '2-digit'};
+      formattedTime = timestamp.toLocaleDateString('en-us', timeOptions)
+    }
 
     return (
       <div className={msgWrapperOuterClass}>
@@ -24,7 +38,7 @@ export class Message extends React.Component {
             {this.props.message}
           </div>
           {this.props.renderTime
-            ? <div className={timestampClass}>{this.props.time}</div>
+            ? <div className={timestampClass}>{formattedTime}</div>
             : null
           }
         </div>
