@@ -18,12 +18,14 @@ export class MessageList extends React.Component {
       const prevMessageInd = messages.length - 1;
       let unixTimestamp = new Date().getTime();
 
+
       data['renderName'] = true;
       data['renderTime'] = true;
 
-      if (prevMessageInd > 0) {
+      if (prevMessageInd >= 0) {
         if (messages[prevMessageInd]['user_id'] == data['user_id'] 
-           && unixTimeStamp - messages['time'] < 30000) {
+           && (unixTimestamp - messages[prevMessageInd]['time'] < 30000)) {
+             console.log('setting should be false')
           messages[prevMessageInd]['renderTime'] = false;
           data['renderName'] = false;
         }
@@ -66,25 +68,6 @@ export class MessageList extends React.Component {
     let prevUserID;
     let prevTime = 0;
     messages.forEach((message, index) => {
-      
-      /*
-        when to render time:
-          when the next user is different
-          else
-            when the previous message was > 30 seconds ago
-          aka, don't render when:
-            previous user same, and last message < 30 seconds ago
-          
-          when to render name:
-          when the *previous* user is different
-          else
-            when the previous message was > 30 seconds ago
-          aka, don't render when:
-            next user the same, and last message < 30 seconds ago
-
-        This should be added to above so it doesn't have to calculate each time
-      */
-
       messageBlocks.push(
        <Message 
           message={message['message']} 
