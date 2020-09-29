@@ -35,7 +35,15 @@ export class MessageList extends React.Component {
       
       this.setState({
         'messages': messages
-      })
+      });
+
+      const timeDivs = document.querySelectorAll('.timestamp')
+
+      let timer = setTimeout(() => {
+        // console.log(timeDivs[timeDivs.length - 1])
+        timeDivs[timeDivs.length - 1].classList.remove('delay-show');
+      }, 1000);
+
     });
 
     Socket.on('change username', (data) => {
@@ -59,7 +67,7 @@ export class MessageList extends React.Component {
   render() {
     let messages = this.state.messages;
     let messageBlocks = [];
-    messages.forEach(message => {
+    messages.forEach((message, index) => {
       messageBlocks.push(
        <Message 
           message={message['message']} 
@@ -69,6 +77,7 @@ export class MessageList extends React.Component {
           time={message['time']}
           renderName={message['renderName']}
           renderTime={message['renderTime']}
+          delayShow={index == messages.length - 1 ? true : false}
         />
       );
     })

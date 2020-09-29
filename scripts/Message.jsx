@@ -11,6 +11,7 @@ export class Message extends React.Component {
     const msgClass = 'message ' + msgSenderClass;
     const msgWrapperOuterClass = 'message-wrapper__outer ' + msgSenderClass;
     const msgWrapperInnerClass = 'message-wrapper__inner ' + msgSenderClass;
+    const timestampClass = this.props.delayShow ? 'timestamp delay-show' : 'timestamp' 
 
     return (
       <div className={msgWrapperOuterClass}>
@@ -23,7 +24,7 @@ export class Message extends React.Component {
             {this.props.message}
           </div>
           {this.props.renderTime
-            ? <div className="timestamp">{this.props.time}</div>
+            ? <div className={timestampClass}>{this.props.time}</div>
             : null
           }
         </div>
