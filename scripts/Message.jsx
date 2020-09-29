@@ -9,13 +9,19 @@ export class Message extends React.Component {
   render() {
     const msgSenderClass = (getCookie('user_id') == this.props.user_id ? 'self-message' : 'other-message');
     const msgClass = 'message ' + msgSenderClass;
-    const msgWrapperClass = 'message-wrapper ' + msgSenderClass;
+    const msgWrapperOuterClass = 'message-wrapper__outer ' + msgSenderClass;
+    const msgWrapperInnerClass = 'message-wrapper__inner ' + msgSenderClass;
     
     return (
       // <div className="message" data-user-id={this.props.user_id}>
-      <div className={msgWrapperClass}>
-        <div className={msgClass}>
-          {this.props.message + this.props.user_name}
+      <div className={msgWrapperOuterClass}>
+        <div className={msgWrapperInnerClass}>
+          <div className={msgClass}>
+            {this.props.message}
+          </div>
+          <div className="username">
+            {this.props.user_name}
+          </div>
         </div>
       </div>
     );

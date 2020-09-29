@@ -15,8 +15,10 @@ export class Content extends React.Component {
         return (
             <div id="chat-wrapper">
                 <MessageList />
-                <UsernameBox />
-                <ChatTextBox /> 
+                <div id="input-wrapper">
+                    <UsernameBox />
+                    <ChatTextBox /> 
+                </div>
             </div>
         );
     }
