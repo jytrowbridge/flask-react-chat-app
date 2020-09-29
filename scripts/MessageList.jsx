@@ -75,6 +75,12 @@ export class MessageList extends React.Component {
         return message;
       });
 
+      updated_messages.push({
+        'type': 'usernameUpdate',
+        'user_name': data['user_name'],
+        'old_user_name': data['old_user_name']
+      }); 
+
       this.setState({
         'messages': updated_messages
       });
@@ -109,11 +115,17 @@ export class MessageList extends React.Component {
             delayShow={message['delayShow']}
           />
         );
-      } else if(message['type'] == 'userConnect' || message['type'] == 'userDisconnect') {
+      } else if (message['type'] == 'userConnect' || message['type'] == 'userDisconnect') {
         const connected = message['type'] == 'userConnect';
         messageBlocks.push(
-          <div className="connection-message" key={uuidv4()}>
+          <div className="meta-message" key={uuidv4()}>
             {message['user_name']} {connected ? 'joined the chat!' : 'left the chat :('}
+          </div>
+        )
+      } else if (message['type'] == 'usernameUpdate') {
+        messageBlocks.push(
+          <div className="meta-message" key={uuidv4()}>
+            {message['old_user_name']} changed their name to {message['user_name']}
           </div>
         )
       }

@@ -17,6 +17,7 @@ export class UsernameBox extends React.Component {
     document.cookie = `user_name=${this.state.value}`
     Socket.emit('update_username', {
       'user_name': this.state.value,
+      'old_user_name': old_username,
       'user_id': getCookie('user_id')
     });
     console.log(`Sent update for user ${old_username}, changed username to ${this.state.value}`);

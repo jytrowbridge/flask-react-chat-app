@@ -61,15 +61,13 @@ def send_message(data):
     user_name = data['user_name']
     socketio.emit('message received', {
         'message': message,
-        'user_id' : user_id,
-        'user_name' : user_name
+        'user_id': user_id,
+        'user_name': user_name
     })
 
 @socketio.on('update_username')
 def change_username(data):
     print("Got change_username event with data: ", data)
-    user_id = data['user_id']
-    user_name = data['user_name']
     socketio.emit('change username', data)
 
 
