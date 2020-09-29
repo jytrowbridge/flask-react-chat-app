@@ -14,11 +14,8 @@ export class MessageList extends React.Component {
   componentDidMount() {
     Socket.on('message received', (data) => {
       let messages = this.state.messages;
-
       const prevMessageInd = messages.length - 1;
       let unixTimestamp = new Date().getTime();
-
-
       data['renderName'] = true;
       data['renderTime'] = true;
 
@@ -26,6 +23,8 @@ export class MessageList extends React.Component {
         if (messages[prevMessageInd]['user_id'] == data['user_id'] 
            && (unixTimestamp - messages[prevMessageInd]['time'] < 30000)) {
              console.log('setting should be false')
+          // if message user different than previous, or time since last message > 30 secs, render name
+          // if message user different than next, or time since last message > 30 secs, render time
           messages[prevMessageInd]['renderTime'] = false;
           data['renderName'] = false;
         }
@@ -33,14 +32,13 @@ export class MessageList extends React.Component {
 
       data['time'] = unixTimestamp;
       messages.push(data);
+      
       this.setState({
         'messages': messages
       })
     });
 
     Socket.on('change username', (data) => {
-
-      console.log('change username notice received at message list level')
 
       let user_id = data['user_id'];
       let user_name = data['user_name'];
@@ -52,8 +50,6 @@ export class MessageList extends React.Component {
         return message;
       });
 
-      console.log(messages);
-
       this.setState({
         'messages': updated_messages
       });
@@ -62,12 +58,8 @@ export class MessageList extends React.Component {
 
   render() {
     let messages = this.state.messages;
-
     let messageBlocks = [];
-
-    let prevUserID;
-    let prevTime = 0;
-    messages.forEach((message, index) => {
+    messages.forEach(message => {
       messageBlocks.push(
        <Message 
           message={message['message']} 
@@ -82,7 +74,6 @@ export class MessageList extends React.Component {
     })
 
     const placeholder = <div id='chat-placeholder'>No chats yet :( Say something interesting!</div>
-
     const content = messages.length > 0 ? messageBlocks : placeholder;
 
     return (
