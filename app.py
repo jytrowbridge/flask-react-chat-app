@@ -35,16 +35,23 @@ def index():
             )
     return resp
 
+
 @socketio.on('connect')
 def on_connect():
-    print('Someone connected!')
+    user_name = request.cookies.get('user_name')
+    print(f'{user_name} connected!')
     socketio.emit('connected', {
-        'test': 'Connected'
+        'user_name': user_name
     })
+
 
 @socketio.on('disconnect')
 def on_disconnect():
-    print ('Someone disconnected!')
+    user_name = request.cookies.get('user_name')
+    print(f'{user_name} disconnected!')
+    socketio.emit('disconnected', {
+        'user_name': user_name
+    })
 
 @socketio.on('send:message')
 def send_message(data):

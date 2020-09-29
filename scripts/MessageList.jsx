@@ -11,6 +11,20 @@ export class MessageList extends React.Component {
     };
   }
 
+  handleConnection(data, type) {
+    const userName = data['user_name'];
+    let messages = this.state.messages;
+    const msgType = type == 'connected' ? 'userConnect' : 'userDisconnect'
+    messages.push({
+      'type': msgType,
+      'user_name': userName
+    });
+
+    this.setState({
+      'messages': messages
+    })
+  }
+
   componentDidMount() {
     Socket.on('message received', (data) => {
       let messages = this.state.messages;
@@ -18,6 +32,7 @@ export class MessageList extends React.Component {
       let unixTimestamp = new Date().getTime();
       data['renderName'] = true;
       data['renderTime'] = true;
+      data['type'] = 'message';
       
       if (prevMessageInd >= 0) {
         messages[prevMessageInd]['delayShow'] = false;
@@ -48,7 +63,6 @@ export class MessageList extends React.Component {
     });
 
     Socket.on('change username', (data) => {
-
       let user_id = data['user_id'];
       let user_name = data['user_name'];
       let messages = this.state.messages;
@@ -65,32 +79,55 @@ export class MessageList extends React.Component {
         'messages': updated_messages
       });
     });
+
+    Socket.on('connected', (data) =>{
+      this.handleConnection(data, 'connected');
+    });
+
+    Socket.on('disconnected', (data) =>{
+      this.handleConnection(data, 'disconnected');
+    });
   }
 
+  
   render() {
     let messages = this.state.messages;
     let messageBlocks = [];
+    let messagesExist = false;
     messages.forEach(message => {
-      messageBlocks.push(
-       <Message 
-          message={message['message']} 
-          key={uuidv4()}
-          user_id={message['user_id']}
-          user_name={message['user_name']}
-          time={message['time']}
-          renderName={message['renderName']}
-          renderTime={message['renderTime']}
-          delayShow={message['delayShow']}
-        />
-      );
+      if (message['type'] == 'message') {
+        messagesExist = true;
+        messageBlocks.push(
+         <Message 
+            message={message['message']} 
+            key={uuidv4()}
+            user_id={message['user_id']}
+            user_name={message['user_name']}
+            time={message['time']}
+            renderName={message['renderName']}
+            renderTime={message['renderTime']}
+            delayShow={message['delayShow']}
+          />
+        );
+      } else if(message['type'] == 'userConnect' || message['type'] == 'userDisconnect') {
+        const connected = message['type'] == 'userConnect';
+        messageBlocks.push(
+          <div className="connection-message" key={uuidv4()}>
+            {message['user_name']} {connected ? 'joined the chat!' : 'left the chat :('}
+          </div>
+        )
+      }
     })
 
     const placeholder = <div id='chat-placeholder'>No chats yet :( Say something interesting!</div>
-    const content = messages.length > 0 ? messageBlocks : placeholder;
-
+    console.log(messagesExist)
     return (
       <div id="message-list">
-        {content}
+        {messagesExist
+        ? null
+        : placeholder
+        }
+        {messageBlocks}
       </div>
     );
   }

@@ -90,3 +90,9 @@
   color: #1e1e1e;
   margin-right: 5px;
 }
+
+.connection-message {
+  text-align: center;
+  font-weight: bold;
+  font-style: italic;
+}
