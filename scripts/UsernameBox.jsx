@@ -5,7 +5,7 @@ import { getCookie } from './getCookie'
 export class UsernameBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''}
+    this.state = {value: getCookie('user_name')}
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
