@@ -18,8 +18,9 @@ export class MessageList extends React.Component {
       let unixTimestamp = new Date().getTime();
       data['renderName'] = true;
       data['renderTime'] = true;
-
+      
       if (prevMessageInd >= 0) {
+        messages[prevMessageInd]['delayShow'] = false;
         if (messages[prevMessageInd]['user_id'] == data['user_id'] 
            && (unixTimestamp - messages[prevMessageInd]['time'] < 30000)) {
              console.log('setting should be false')
@@ -31,16 +32,16 @@ export class MessageList extends React.Component {
       }
 
       data['time'] = unixTimestamp;
+      data['delayShow'] = true;
       messages.push(data);
       
       this.setState({
         'messages': messages
       });
 
+      // Set timer to remove 'hidden' from timestamp after 3 seconds
       const timeDivs = document.querySelectorAll('.timestamp')
-
       let timer = setTimeout(() => {
-        // console.log(timeDivs[timeDivs.length - 1])
         timeDivs[timeDivs.length - 1].classList.remove('delay-show');
       }, 1000);
 
@@ -54,7 +55,9 @@ export class MessageList extends React.Component {
       let updated_messages = messages.map(message => {
         if (message['user_id'] == user_id) {
           message['user_name'] = user_name;
-        } 
+        } if (message['delayShow']) {
+          message['delayShow'] = false;
+        }
         return message;
       });
 
@@ -67,7 +70,7 @@ export class MessageList extends React.Component {
   render() {
     let messages = this.state.messages;
     let messageBlocks = [];
-    messages.forEach((message, index) => {
+    messages.forEach(message => {
       messageBlocks.push(
        <Message 
           message={message['message']} 
@@ -77,7 +80,7 @@ export class MessageList extends React.Component {
           time={message['time']}
           renderName={message['renderName']}
           renderTime={message['renderTime']}
-          delayShow={index == messages.length - 1 ? true : false}
+          delayShow={message['delayShow']}
         />
       );
     })
