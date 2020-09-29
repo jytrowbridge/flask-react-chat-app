@@ -2,10 +2,11 @@
   color: black;
   background-color: white;
   padding: 5px 15px;
-  border-radius: 10px;
+  border-radius: 20px;
   max-width: 300px;
   word-wrap: break-word;
   width: max-content;
+  margin: 2px 0px;
 }
 
 .message-wrapper {
@@ -73,4 +74,9 @@
   flex-direction: column;
   align-items: self-end;
 }
+
+.username {
+  margin: 15px 5px 0px 5px;
+  font-weight: bold;
 }
+
