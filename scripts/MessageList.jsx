@@ -51,16 +51,36 @@ export class MessageList extends React.Component {
 
     let prevUsername = '';
     let prevTime = 0;
-    messages.forEach(message =>{
+    messages.forEach((message, index) => {
       
+      /*
+        when to render time:
+          when the next user is different, or
+          when the previous message was > 30 seconds ago
+
+
+      */
+
+
       // maybe should stick this in the socket reception
-      let renderNameAndTime = true;
-      if (prevUsername == message['user_name']) {
+      let renderName = true;
+      let renderTime = true;
+      if (prevUsername == message['user_name']) { // this should be using id!!
         if (message['time'] - prevTime < 30000) {
           // Hide username/time if same user sends multiple messages in a row, and messages were sent within 30 seconds
-          renderNameAndTime = false;
+          renderName = false;
+        } else {
+          renderTime = true;
         }
+
+        if (messages.length > index + 1) {
+          if (messages[index + 1]['user_name'] != message['user_name']) {
+            renderTime = true;
+          }
+        }
+
       }
+
       prevUsername = message['user_name'];
       prevTime = message['time'];
 
