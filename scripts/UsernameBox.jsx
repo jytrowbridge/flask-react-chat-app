@@ -35,12 +35,16 @@ export class UsernameBox extends React.Component {
     const usernameForm = document.getElementById('username-form');
     const usernameInput = document.getElementById('username-input');
     const inputText = document.getElementById('input-text');
-    if (usernameForm.classList.contains('max-width')) {
-      usernameForm.classList.remove('max-width')
+    if (inputText.classList.contains('to-right')) {
+      inputText.classList.remove('to-right');
       usernameInput.classList.remove('edit');
-      inputText.focus();
+      usernameForm.classList.remove('max-width');
+      setTimeout(() => {
+        inputText.focus();
+      }, 500)
     } else { 
-      usernameForm.classList.add('max-width')
+      usernameForm.classList.add('max-width');
+      inputText.classList.add('to-right');
       usernameInput.classList.add('edit');
       usernameInput.focus();
     }

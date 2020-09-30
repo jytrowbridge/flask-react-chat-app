@@ -74,9 +74,15 @@ body {
   font-family: inherit;
   border: none;
   margin: 0;
+  margin-left: 0px;
   border-left: 2px solid var(--text-input-border-color);
+  transition: margin-left 500ms;
   /* text-align: center; */
 }
+
+/* #input-text.to-right {
+  margin-left: 150px;
+} */
 
 #chat-placeholder {
   text-align: center;
@@ -212,8 +218,12 @@ body {
     border-left: none;
   }
 
-  #username-form.max-width {
+  #input-text.to-right {
+    margin-left: 100vw;
+  }
+
+  /* #username-form.max-width {
     width: 100vw;
     flex-shrink: 0;
-  }
+  } */
 }
