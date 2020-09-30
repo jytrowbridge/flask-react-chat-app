@@ -33,12 +33,17 @@ export class UsernameBox extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div id="username-box">
+          <div id="username-header">
+            Username:
+          </div>
           <input type="text"
             value={this.state.value}
             onChange={this.handleChange}
+            id="username-input"
           />
           <input type="submit"
             value="Update!"
+            id="username-button"
           />
         </div>
       </form>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Socket } from './Socket';
 import { getCookie } from './getCookie'
+import { submitOnEnter } from './submitOnEnter'
 
 export class ChatTextBox extends React.Component {
   constructor(props) {
@@ -31,10 +32,16 @@ export class ChatTextBox extends React.Component {
     })
   }
 
+  componentDidMount() {
+    const inputTextArea = document.getElementById('input-text');
+    inputTextArea.addEventListener('keypress', submitOnEnter);
+  }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type="text" 
+        <textarea
+          rows="5"
           value={this.state.value} 
           onChange={this.handleChange}  
           id="input-text"
