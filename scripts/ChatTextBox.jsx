@@ -39,12 +39,14 @@ export class ChatTextBox extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <textarea
-          rows="5"
+      <form onSubmit={this.handleSubmit} id="input-form">
+        <input
+          autoFocus="true"
+          type="text"
           value={this.state.value} 
           onChange={this.handleChange}  
           id="input-text"
+          placeholder="Type a message!" // need to update so this disappears after click/first message
         />
       </form>
     )

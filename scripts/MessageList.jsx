@@ -33,7 +33,7 @@ export class MessageList extends React.Component {
       data['renderName'] = true;
       data['renderTime'] = true;
       data['type'] = 'message';
-      
+
       if (prevMessageInd >= 0) {
         messages[prevMessageInd]['delayShow'] = false;
         if (messages[prevMessageInd]['user_id'] == data['user_id'] 

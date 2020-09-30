@@ -8,6 +8,7 @@ export class UsernameBox extends React.Component {
     this.state = {value: getCookie('user_name')}
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleSubmit(event) {
@@ -20,6 +21,7 @@ export class UsernameBox extends React.Component {
       'old_user_name': old_username,
       'user_id': getCookie('user_id')
     });
+    this.handleClick();
     console.log(`Sent update for user ${old_username}, changed username to ${this.state.value}`);
   }
 
@@ -29,19 +31,34 @@ export class UsernameBox extends React.Component {
     });
   }
 
+  handleClick() {
+    const usernameForm = document.getElementById('username-form');
+    const usernameInput = document.getElementById('username-input');
+    const inputText = document.getElementById('input-text');
+    if (usernameForm.classList.contains('max-width')) {
+      usernameForm.classList.remove('max-width')
+      usernameInput.classList.remove('edit');
+      inputText.focus();
+    } else { 
+      usernameForm.classList.add('max-width')
+      usernameInput.classList.add('edit');
+      usernameInput.focus();
+    }
+  }
+
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} id="username-form">
         <div id="username-box">
-          <div id="username-header">
-            Username:
+          <div id="username-gear" onClick={this.handleClick}>
+            &#x2699;
           </div>
           <input type="text"
             value={this.state.value}
             onChange={this.handleChange}
             id="username-input"
           />
-          <input type="submit"
+          <input type="submit" //className="hidden"
             value="Update!"
             id="username-button"
           />
