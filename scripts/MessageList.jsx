@@ -2,6 +2,7 @@ import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Socket } from './Socket';
 import { Message } from './Message';
+import { scrollToBottom } from './scrollToBottom'
 
 export class MessageList extends React.Component {
   constructor(props) {
@@ -60,6 +61,8 @@ export class MessageList extends React.Component {
         timeDivs[timeDivs.length - 1].classList.remove('delay-show');
       }, 1000);
 
+      scrollToBottom();
+
     });
 
     Socket.on('change username', (data) => {
@@ -100,6 +103,7 @@ export class MessageList extends React.Component {
     let messages = this.state.messages;
     let messageBlocks = [];
     let messagesExist = false;
+
     messages.forEach(message => {
       if (message['type'] == 'message') {
         messagesExist = true;
@@ -129,7 +133,7 @@ export class MessageList extends React.Component {
           </div>
         )
       }
-    })
+    });
 
     const placeholder = <div id='chat-placeholder'>No chats yet :( Say something interesting!</div>
     console.log(messagesExist)
